@@ -31,7 +31,11 @@ func TestDefaultPrepareScriptKubernetesReusesRetainedPVCWorkspace(t *testing.T) 
 		t.Skip("git not available")
 	}
 	_, origin := setupPostludeRepo(t, "main")
-	root := t.TempDir()
+	rawRoot := t.TempDir()
+	root, err := filepath.EvalSymlinks(rawRoot)
+	if err != nil {
+		root = rawRoot
+	}
 	workspace := filepath.Join(root, "workspace")
 	if err := os.MkdirAll(filepath.Join(workspace, "lost+found"), 0o755); err != nil {
 		t.Fatal(err)

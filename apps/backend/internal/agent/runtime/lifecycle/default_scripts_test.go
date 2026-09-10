@@ -152,8 +152,11 @@ func TestKandevBranchCheckoutPostlude_LandsOnFeatureBranch(t *testing.T) {
 // baseBranch) and a workspace cloned from it, then leaves the workspace on
 // baseBranch. Returns workspace path + origin (bare) path.
 func setupPostludeRepo(t *testing.T, baseBranch string) (workspace, origin string) {
-	t.Helper()
-	root := t.TempDir()
+	rawRoot := t.TempDir()
+	root, err := filepath.EvalSymlinks(rawRoot)
+	if err != nil {
+		root = rawRoot
+	}
 	origin = filepath.Join(root, "origin.git")
 	seed := filepath.Join(root, "seed")
 	workspace = filepath.Join(root, "workspace")
