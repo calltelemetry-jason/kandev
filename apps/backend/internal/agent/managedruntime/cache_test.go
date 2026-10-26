@@ -7,7 +7,11 @@ import (
 )
 
 func TestRemoveNpxExecutionTreeDeletesOnlyExactTrustedKey(t *testing.T) {
-	cacheRoot := t.TempDir()
+	rawCacheRoot := t.TempDir()
+	cacheRoot, err := filepath.EvalSymlinks(rawCacheRoot)
+	if err != nil {
+		cacheRoot = rawCacheRoot
+	}
 	npxRoot := filepath.Join(cacheRoot, "_npx")
 	if err := os.MkdirAll(npxRoot, 0o755); err != nil {
 		t.Fatal(err)
@@ -34,7 +38,11 @@ func TestRemoveNpxExecutionTreeDeletesOnlyExactTrustedKey(t *testing.T) {
 }
 
 func TestRemoveNpxExecutionTreeIsIdempotentAndRejectsUnsafeTargets(t *testing.T) {
-	cacheRoot := t.TempDir()
+	rawCacheRoot := t.TempDir()
+	cacheRoot, err := filepath.EvalSymlinks(rawCacheRoot)
+	if err != nil {
+		cacheRoot = rawCacheRoot
+	}
 	if err := RemoveNpxExecutionTree(cacheRoot, "managed-acp@1.2.3"); err != nil {
 		t.Fatalf("absent key should be idempotent: %v", err)
 	}
