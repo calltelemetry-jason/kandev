@@ -170,6 +170,14 @@ grep -qxF 'export PATH="$HOME/.local/bin:$PATH"' "$HOME/.bashrc" 2>/dev/null || 
 		installViaNpm:      false,
 		sessionDirTemplate: "{home}/.local/share/goose",
 	}},
+	{func() Agent { return NewCTAgentACP() }, acpAgentSpec{
+		id: "ctagent-acp", displayName: "ctagent", detectBinaries: []string{"ctagent", "ct-agent"},
+		expectedArgv:       []string{"ctagent", "acp"},
+		inferenceArgv:      []string{"ctagent", "acp"},
+		passthroughArgv:    []string{"ctagent", "run"},
+		installViaNpm:      false,
+		sessionDirTemplate: "{home}/.ctagent",
+	}},
 }
 
 func TestNewACPAgents_IDAndDisplay(t *testing.T) {
