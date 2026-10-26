@@ -36,6 +36,9 @@ function escapeRegExp(value: string): string {
 
 export default defineConfig({
   plugins: [react(), pseudoLocaleBundling()],
+  optimizeDeps: {
+    exclude: ["@tiptap/extension-drag-handle-react", "@tiptap/extension-drag-handle"],
+  },
   server: {
     port: readPort(process.env.PORT),
     strictPort: Boolean(process.env.PORT),
